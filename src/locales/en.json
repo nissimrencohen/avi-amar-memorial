@@ -5,7 +5,7 @@
       "birthDate": "December 18, 1968",
       "deathDate": "October 7, 2023",
       "quote": "Don't worry, we'll get through this, I'm protecting you.",
-      "portrait": "/assets/images/main-photo.jpeg"
+      "portrait": "./assets/images/main-photo.jpeg"
     },
     "timeline": {
       "title": "His Life and Heroism",

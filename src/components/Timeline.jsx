@@ -59,7 +59,7 @@ const Timeline = () => {
           {/* Image Container */}
           <div className="w-full md:w-1/2 min-h-[50vh] md:min-h-[70vh] relative bg-[#0a0f18] p-4 md:p-8 flex items-center justify-center">
             <img
-              src="/assets/images/last-photo.jpeg"
+              src="./assets/images/last-photo.jpeg"
               alt="The Final Photo"
               className="w-full h-full object-contain opacity-80 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-1000 md:group-hover:scale-105 drop-shadow-2xl rounded-xl"
             />
@@ -105,12 +105,12 @@ const Timeline = () => {
 
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-12">
               <img
-                src="/assets/images/gallery/memorial/מפגש הרוכבים ראשי.jpeg"
+                src="./assets/images/gallery/memorial/מפגש הרוכבים ראשי.jpeg"
                 alt="מפגש הרוכבים ראשי"
                 className="w-full md:w-1/2 h-64 md:h-80 object-cover rounded-2xl shadow-xl border border-slate-700/50"
               />
               <img
-                src="/assets/images/gallery/memorial/מפגש הרוכבים 5.jpeg"
+                src="./assets/images/gallery/memorial/מפגש הרוכבים 5.jpeg"
                 alt="מפגש הרוכבים"
                 className="w-full md:w-1/2 h-64 md:h-80 object-cover rounded-2xl shadow-xl border border-slate-700/50"
               />

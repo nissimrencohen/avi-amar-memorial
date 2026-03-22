@@ -5,7 +5,7 @@
       "birthDate": "18 בדצמבר 1968",
       "deathDate": "7 באוקטובר 2023",
       "quote": "אל תדאג, אנחנו נעבור את זה, אני שומר עליך.",
-      "portrait": "/assets/images/main-photo.jpeg"
+      "portrait": "./assets/images/main-photo.jpeg"
     },
     "timeline": {
       "title": "סיפור חייו וגבורתו",

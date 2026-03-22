@@ -12,8 +12,8 @@ const Gallery = () => {
   const familyGlob = import.meta.glob('/public/assets/images/gallery/family/*');
   const memorialGlob = import.meta.glob('/public/assets/images/gallery/memorial/*');
   
-  const familyImages = Object.keys(familyGlob).map(path => path.replace('/public', ''));
-  const memorialImages = Object.keys(memorialGlob).map(path => path.replace('/public', ''));
+  const familyImages = Object.keys(familyGlob).map(path => path.replace('/public/', './'));
+  const memorialImages = Object.keys(memorialGlob).map(path => path.replace('/public/', './'));
 
   const videos = t('gallery.videos', { returnObjects: true });
   
