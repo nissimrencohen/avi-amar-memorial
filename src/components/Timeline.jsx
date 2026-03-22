@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const Timeline = () => {
   const { t } = useTranslation();
+  const [showAllRiders, setShowAllRiders] = useState(false);
   const events = t('timeline.events', { returnObjects: true });
+  const ridersGlob = import.meta.glob('/public/assets/images/gallery/riders_meetup/*');
+  const ridersImages = Object.keys(ridersGlob).map(path => path.replace('/public/', './'));
+
+  const mainRiderImage = ridersImages.find(img => {
+    try {
+      return decodeURIComponent(img).includes('ראשי') || img.includes('1.jpeg');
+    } catch {
+      return img.includes('ראשי') || img.includes('1.jpeg');
+    }
+  }) || ridersImages[0];
+  const restRiderImages = ridersImages.filter(img => img !== mainRiderImage);
+  
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const lightboxSlides = [mainRiderImage, ...restRiderImages].filter(Boolean).map(src => ({ src }));
 
   if (!Array.isArray(events)) return null;
 
@@ -103,18 +120,90 @@ const Timeline = () => {
               {t('timeline.memorialSite.text')}
             </p>
 
-            <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-12">
-              <img
-                src="./assets/images/gallery/memorial/מפגש הרוכבים ראשי.jpeg"
-                alt="מפגש הרוכבים ראשי"
-                className="w-full md:w-1/2 h-64 md:h-80 object-cover rounded-2xl shadow-xl border border-slate-700/50"
-              />
-              <img
-                src="./assets/images/gallery/memorial/מפגש הרוכבים 5.jpeg"
-                alt="מפגש הרוכבים"
-                className="w-full md:w-1/2 h-64 md:h-80 object-cover rounded-2xl shadow-xl border border-slate-700/50"
-              />
-            </div>
+            {mainRiderImage && (
+              <div className="mb-12">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  className="w-full max-w-4xl mx-auto h-[350px] md:h-[500px] overflow-hidden rounded-2xl shadow-xl border border-slate-700/50 relative group cursor-pointer"
+                  onClick={() => setLightboxIndex(0)}
+                >
+                  <img
+                    src={mainRiderImage}
+                    alt="מפגש הרוכבים ראשי"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                    <div className="bg-slate-800/80 backdrop-blur-sm text-white px-6 py-3 rounded-full flex items-center gap-2">
+                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                       <span>הגדל תמונה למסך מלא</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {!showAllRiders && restRiderImages.length > 0 && (
+                  <button 
+                    onClick={() => setShowAllRiders(true)}
+                    className="text-slate-300 hover:text-white flex items-center justify-center gap-2 mx-auto mt-6 px-6 py-2 border border-slate-600 rounded-full hover:bg-slate-700 transition duration-300"
+                  >
+                    <span>הצג {restRiderImages.length} תמונות נוספות מהמפגש</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  </button>
+                )}
+
+                <AnimatePresence>
+                  {showAllRiders && restRiderImages.length > 0 && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8"
+                    >
+                      {restRiderImages.map((src, index) => (
+                        <motion.div 
+                          key={index} 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.4, delay: index * 0.05 }}
+                          className="h-[180px] md:h-[220px] overflow-hidden rounded-xl shadow-lg relative group border border-slate-700/50 cursor-pointer"
+                          onClick={() => setLightboxIndex(index + 1)}
+                        >
+                          <img
+                            src={src}
+                            alt="מפגש הרוכבים"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
+                {showAllRiders && (
+                  <button 
+                    onClick={() => setShowAllRiders(false)}
+                    className="text-slate-300 hover:text-white flex items-center justify-center gap-2 mx-auto mt-8 px-6 py-2 border border-slate-600 rounded-full hover:bg-slate-700 transition duration-300"
+                  >
+                    <span>הסתר תמונות נוספות</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path></svg>
+                  </button>
+                )}
+              </div>
+            )}
+            
+            <Lightbox
+              open={lightboxIndex >= 0}
+              close={() => setLightboxIndex(-1)}
+              index={lightboxIndex}
+              slides={lightboxSlides}
+            />
 
             <div className="flex justify-center mt-4">
               <a

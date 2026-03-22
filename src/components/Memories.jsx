@@ -45,9 +45,6 @@ const Memories = () => {
                     <h4 className="text-slate-800 font-medium text-lg tracking-wide">{memory.author}</h4>
                     <span className="text-slate-400 text-xs md:text-sm tracking-widest uppercase">{memory.relation}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 font-serif shrink-0">
-                    {memory.author.charAt(0)}
-                  </div>
                 </div>
               </div>
             </motion.div>

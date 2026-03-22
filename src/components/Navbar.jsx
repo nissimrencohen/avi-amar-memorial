@@ -16,9 +16,9 @@ const Navbar = () => {
 
   const links = [
     { id: 'timeline', label: t('nav.timeline') },
+    { id: 'memorialSite', label: t('nav.memorialSite') },
     { id: 'memories', label: t('nav.memories') },
     { id: 'gallery', label: t('nav.gallery') },
-    { id: 'memorialSite', label: t('nav.memorialSite') },
     { id: 'candleWall', label: t('nav.candleWall') },
   ];
 
